@@ -13,7 +13,7 @@ The Voker Assessment App is a full-stack application designed to streamline a sp
 
 ## Demo Video
 Watch the demo of the application in action:
-[![Voker Assessment App Demo](https://img.youtube.com/vi/4xWdZny40-s/0.jpg)](https://www.youtube.com/watch?v=4xWdZny40-s)
+[![Voker Assessment App Demo](https://img.youtube.com/vi/4xWdZny40-s/0.jpg)](https://www.youtube.com/watch?v=2OpR2MUJDho)
 
 ---
 
