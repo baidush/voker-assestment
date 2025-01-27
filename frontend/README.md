@@ -4,7 +4,7 @@
 Install the dependencies...
 
 ```bash
-cd svelte-app
+cd frontend
 npm install
 ```
 
