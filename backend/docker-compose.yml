@@ -1,0 +1,14 @@
+version: '3.11'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - OPENAI_API_KEY=your-openai-api-key  # Replace with your actual key
+    volumes:
+      - .:/app
+    command: uvicorn app.api:app --host 0.0.0.0 --port 8000

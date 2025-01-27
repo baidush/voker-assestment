@@ -78,5 +78,3 @@ logs/
 
 # Docker
 *.dockerignore
-**/docker-compose*.yml
-**/Dockerfile*
