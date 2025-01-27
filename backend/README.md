@@ -14,7 +14,7 @@ This is a Python-based FastAPI application that interacts with OpenAI's API for 
 ## Prerequisites
 Before you begin, ensure you have the following installed on your system:
 
-- Python 3.9 or later
+- Python 3.11 or later
 - pip (Python package manager)
 - Virtualenv (optional but recommended)
 
@@ -24,8 +24,8 @@ Before you begin, ensure you have the following installed on your system:
 
 ### Step 1: Clone the Repository
 ```bash
-git clone https://github.com/your-username/your-repo-name.git
-cd your-repo-name
+git clone https://github.com/baidush/voker-assestment
+cd voker-assestment
 ```
 
 ### Step 2: Set Up a Virtual Environment
@@ -38,11 +38,15 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 ### Step 3: Install Dependencies
 Install the required Python packages:
 ```bash
-pip install -r requirements.txt
+cd backend
+pip install --upgrade pip
+pip install build
+pip install .
+
 ```
 
 ### Step 4: Set Up OpenAI API Key
-The application requires an OpenAI API key. Create a `.env` file in the project root and add the following:
+Rename a `.env-example` file in the project root and add the following:
 ```env
 OPENAI_API_KEY=your-openai-api-key
 ```
@@ -53,8 +57,7 @@ Replace `your-openai-api-key` with your actual API key.
 
 ## Running the Application
 
-### Start the FastAPI Server
-Run the following command to start the FastAPI server:
+### Run the FastAPI Server
 ```bash
 uvicorn app.api:app --reload
 ```
@@ -67,7 +70,7 @@ The application will be accessible at `http://127.0.0.1:8000`.
 
 ---
 
-## Running Tests
+## Unit Tests
 
 ### Install Testing Dependencies
 Ensure you have `pytest` installed:
@@ -83,28 +86,8 @@ pytest
 
 ---
 
-## Deployment
-You can deploy this application using any WSGI-compatible server like Gunicorn or a cloud platform like AWS, GCP, or Azure.
-
-Example for Gunicorn:
-```bash
-gunicorn -w 4 -k uvicorn.workers.UvicornWorker app.api:app
-```
-
----
-
 ## License
 [MIT License](LICENSE)
-
----
-
-## Contributing
-Contributions are welcome! Please fork the repository and submit a pull request.
-
----
-
-## Contact
-For issues or feature requests, please open an issue in this repository.
 
 ---
 
