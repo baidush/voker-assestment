@@ -1,4 +1,4 @@
-# Voker Assessment App
+# Voker AI Assessment App
 
 The Voker Assessment App is a full-stack application designed to streamline a specific task or workflow. It is composed of a backend and a frontend, each with its own setup and functionality.
 
