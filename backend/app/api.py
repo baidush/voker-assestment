@@ -62,6 +62,7 @@ def parse_user_input(input_text):
     result = response.choices[0].message['content']
     return result
 
+VALID_PRODUCTS = {"burger", "fries", "drink"}  # Define valid products
 
 @app.post("/parse_request")
 async def parse_request(user_request: UserRequest):
@@ -77,11 +78,22 @@ async def parse_request(user_request: UserRequest):
     # Handle order placement
     if "orders" in result and result["orders"]:
         new_order = {"id": order_id, "items": result["orders"]}
+
+        # Validate order items
+        for order in result["orders"]:
+            for item in order["items"]:
+                if item["item"] not in VALID_PRODUCTS:
+                    raise HTTPException(
+                        status_code=404,
+                        detail=f"Item '{item['item']}' not found"
+                    )
+
+        # Add order to list
         orders.append(new_order)
 
         # Update totals
         for order in result["orders"]:
-            for item in order['items']:
+            for item in order["items"]:
                 item_totals[item["item"]] += item["quantity"]
 
         order_id += 1
@@ -90,8 +102,16 @@ async def parse_request(user_request: UserRequest):
     # Handle cancellation
     if "cancel_order_id" in result:
         cancel_id = result["cancel_order_id"]
-        canceled = False
 
+        # Validate cancel order ID
+        if not any(order["id"] == cancel_id for order in orders):
+            raise HTTPException(
+                status_code=404,
+                detail=f"Order {cancel_id} not found"
+            )
+
+        # Cancel the order
+        canceled = False
         for order in orders:
             if order["id"] == cancel_id:
                 orders.remove(order)
@@ -99,7 +119,7 @@ async def parse_request(user_request: UserRequest):
 
                 # Update totals
                 for item in order["items"]:
-                    for sub_item in item["items"]:  # Iterate through nested items
+                    for sub_item in item["items"]:
                         item_totals[sub_item["item"]] -= sub_item["quantity"]
                 break
 
@@ -108,7 +128,11 @@ async def parse_request(user_request: UserRequest):
         else:
             raise HTTPException(status_code=404, detail=f"Order {cancel_id} not found.")
 
-    return {"message": "Invalid request."}
+    # Invalid request
+    raise HTTPException(
+        status_code=400,
+        detail="Invalid request. Please provide a valid order or cancel request."
+    )
 
 
 @app.get("/get_summary")

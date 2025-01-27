@@ -3,37 +3,47 @@
     let userInput = '';
     let totals = { burger: 0, fries: 0, drink: 0 };
     let orders = [];
+    let errorMessage = ''; // Add this variable to hold error messages
 
     async function fetchSummary() {
         try {
             const res = await fetch('http://localhost:8000/get_summary');
             const data = await res.json();
-            console.log('Fetched Data:', data); // Log the fetched data
-            totals = data.totals;              // Update totals
-            orders = data.orders;              // Update orders
+            totals = data.totals; // Update totals
+            orders = data.orders; // Update orders
         } catch (error) {
             console.error('Error fetching summary:', error);
         }
     }
 
     async function handleRequest() {
-        await fetch('http://localhost:8000/parse_request', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message: userInput }),
-        });
+        try {
+            const res = await fetch('http://localhost:8000/parse_request', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: userInput }),
+            });
 
-        await fetchSummary();
-        userInput = '';
+            if (!res.ok) {
+                const errorData = await res.json();
+                errorMessage = errorData.detail || 'An error occurred'; // Display server error message
+                return;
+            }
+
+            errorMessage = ''; // Clear error message if request succeeds
+            await fetchSummary();
+            userInput = '';
+        } catch (error) {
+            errorMessage = 'An error occurred while processing your request.';
+            console.error(error);
+        }
     }
 
     onMount(() => {
-        console.log('Fetching summary...');
-        fetchSummary().then(() => {
-            console.log('Updated orders:', orders);
-        });
-    }); 
+        fetchSummary();
+    });
 </script>
+
 
 
 <style>
@@ -146,6 +156,11 @@
         <button on:click={handleRequest}>Run</button>
     </div>
 
+    <!-- Error Message -->
+    {#if errorMessage}
+        <p style="color: red; margin-top: 10px;">{errorMessage}</p>
+    {/if}
+
     <!-- Order History -->
     <div class="order-history">
         <h3>Order History</h3>
@@ -167,3 +182,4 @@
         {/if}
     </div>
 </main>
+
