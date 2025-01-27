@@ -1,4 +1,4 @@
-# Python Application
+# Python (Fast API) Application
 
 This is a Python-based FastAPI application that interacts with OpenAI's API for a drive-thru ordering system. The application processes user inputs to extract order details, maintains in-memory storage of orders, and provides an API for order management.
 
@@ -83,8 +83,36 @@ Run the following command to execute the test suite:
 ```bash
 pytest
 ```
-
 ---
+
+## Running the Application with Docker and Docker Compose
+
+### Build the Docker Image
+Navigate to your project directory and run:
+```bash
+docker-compose build
+```
+
+### Run the Application
+Start the application using:
+```bash
+docker-compose up
+```
+
+This will:
+- Build the Docker image.
+- Start the FastAPI application on port `8000`.
+
+### Access the Application
+Open your browser and navigate to:
+```
+http://localhost:8000
+```
+
+The API documentation is available at:
+```
+http://localhost:8000/docs
+```
 
 ## License
 [MIT License](LICENSE)
